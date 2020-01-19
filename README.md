@@ -1,6 +1,8 @@
 # 41100 Applied Regression
 
-Dependencies: R 3.6.x
+### Dependencies:
+
+- [R Programming Language](https://www.r-project.org/) Version `3.6.x`
 
 ### Quickstart 
 
