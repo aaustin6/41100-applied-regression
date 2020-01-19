@@ -66,3 +66,26 @@ fizzbuzz <- function(x) {
     return(x)  
   }
 }
+
+# TODO: Build out DataFrame, Linear Regression, Plotting documentation
+# DataFrame 
+# head # first fiew entires of the dataframe, 6 by default
+# tail # last few entries of teh dataframe, 6 by default 
+# str(L) # breakdown of the  dataset
+
+# Linear Regression
+# lm      # linear model 
+# anova   # anova analysis
+# summary # summ
+
+# Visualization 
+#
+# High-level plots 
+# plot()
+# hist()
+# boxplot()
+# qqnorm()
+# qqline()
+
+# Low-level plots 
+# points(), lines(), abline()
