@@ -1,4 +1,4 @@
-setwd("/Users/stephenpuiszis/Tresors/graduate-school/41100-applied-regression/code/homework1")
+getwd()
 housing = read.csv(file = "rent.csv")
 
 # (i) Produce a boxplot for the marginal distribution of Rent, and compare this to boxplots for
