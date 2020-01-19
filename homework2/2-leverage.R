@@ -29,11 +29,24 @@ plot(
 model = lm(returns_spx ~ returns_vix)
 abline(model, col=c("red"))
 
-# calculation
-# TODO: why is this coming up with a different value?
-b1 = cor(returns_vix, returns_spx) * (sd(returns_vix)/sd(returns_spx))
+# Check our Model
+plot(
+   model$residuals ~ returns_vix,
+  ylab = "Residuals",
+  xlab =" VIX % Returns",
+  main = "SPX % Returns vs. Residuals",
+  pch = 1,
+)
+residuals_model = lm(model$residuals ~ returns_vix)
+abline(residuals_model, col=c("red"))
+# sum(model$residuals)
+# cor(model$residuals, returns_vix)
+
+# Calculate coefficients using standard deviation and correlation
+b1 = cor(returns_vix, returns_spx) * (sd(returns_spx)/sd(returns_vix))
 b0 = mean(returns_spx) - mean(returns_vix) * b1
 # model$coefficients["(Intercept)"] == b0
+# model$coefficients["returns_vix] == b1
 
 # (iii)
 model_summary = summary(model)
