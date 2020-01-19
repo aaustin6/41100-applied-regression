@@ -1,5 +1,4 @@
 getwd()
-# setwd("./")
 
 leverage = read.csv(file = "leverage.csv")
 
@@ -9,7 +8,8 @@ plot(
   leverage$SPX ~ leverage$VIX,
   xlab = "VIX",
   ylab =" SPX",
-  main = "VIX vs. SPX Data",
+  main = "VIX vs. SPX Raw Data",
+  pch = 1,
 )
 
 # len<-dim(corp)[1]
