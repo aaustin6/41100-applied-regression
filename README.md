@@ -19,5 +19,6 @@ brew install r
 ### Resources 
 
 - [R Styleguide](http://adv-r.had.co.nz/Style.html)
+- [Hands-On Programming with R](https://rstudio-education.github.io/hopr/)
 - [YaRrr! The Pirate’s Guide to R](https://bookdown.org/ndphillips/YaRrr/)
 
