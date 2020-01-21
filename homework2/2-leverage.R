@@ -1,13 +1,10 @@
 getwd()
-
 leverage = read.csv(file = "leverage.csv")
-
-par(mfrow=c(1,1))
 
 plot(
   leverage$SPX ~ leverage$VIX,
   xlab = "VIX",
-  ylab =" SPX",
+  ylab = "SPX",
   main = "VIX vs. SPX Raw Data",
   pch = 1,
 )
@@ -29,12 +26,12 @@ plot(
 model = lm(returns_spx ~ returns_vix)
 abline(model, col=c("red"))
 
-# Check our Model
+# Double-check our Model
 plot(
-   model$residuals ~ returns_vix,
+  model$residuals ~ returns_vix,
   ylab = "Residuals",
-  xlab =" VIX % Returns",
-  main = "SPX % Returns vs. Residuals",
+  xlab = "VIX % Returns",
+  main = "VIX % Returns vs. Residuals",
   pch = 1,
 )
 residuals_model = lm(model$residuals ~ returns_vix)
