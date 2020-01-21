@@ -42,7 +42,7 @@ abline(residuals_model, col=c("red"))
 b1 = cor(returns_vix, returns_spx) * (sd(returns_spx)/sd(returns_vix))
 b0 = mean(returns_spx) - mean(returns_vix) * b1
 
-# Commands for answering particular questions about the model fit:
+# Commands for answering particular questions about the model:
 #
 # sd(returns_spx)
 # sd(returns_vix)
@@ -67,7 +67,8 @@ model_correlation_matches = - model_correlation == cor(returns_vix, returns_spx)
 paste("Model r-squared and correlation match:", model_correlation_matches)
 
 # (v)
-predict_confidence = 0.90
+# https://stats.stackexchange.com/questions/259812/95-confidence-interval-for-mean-of-a-large-sample
+predict_confidence = 0.95 # used for a two-tail test of 90% - see stack exchange link
 predict_stdev = 0.025
 predict_vix_return = 0.10
 predict_y =
@@ -76,7 +77,11 @@ predict_y =
 
 # Y ~ N(predict_y, predict_vix_return)
 # PI = Y +/- stdev
-predict_interval = qnorm(predict_confidence, mean = predict_y, sd = predict_stdev)
+predict_interval = qnorm(
+  predict_confidence,
+  mean = predict_y,
+  sd = predict_stdev,
+)
 predict_lower = predict_y - predict_interval
 predict_upper = predict_y + predict_interval
-cbind(predict_lower, predict_upper)
+predict_final = cbind(predict_lower, predict_y, predict_upper)
