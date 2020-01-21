@@ -25,7 +25,7 @@ plot(
 model = lm(returns_spx ~ returns_vix)
 abline(model, col=c("red"))
 
-# Double-check our Model
+# Double-ceck our Model
 plot(
   model$residuals ~ returns_vix,
   ylab = "Residuals",
