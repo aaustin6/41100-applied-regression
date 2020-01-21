@@ -25,7 +25,7 @@ plot(
 model = lm(returns_spx ~ returns_vix)
 abline(model, col=c("red"))
 
-# Double-ceck our Model
+# Double-check our Model
 plot(
   model$residuals ~ returns_vix,
   ylab = "Residuals",
@@ -41,8 +41,14 @@ abline(residuals_model, col=c("red"))
 # Calculate coefficients using standard deviation and correlation
 b1 = cor(returns_vix, returns_spx) * (sd(returns_spx)/sd(returns_vix))
 b0 = mean(returns_spx) - mean(returns_vix) * b1
+
+# Commands for answering particular questions about the model fit:
+#
+# sd(returns_spx)
+# sd(returns_vix)
+# cor(returns_vix, returns_spx)
 # model$coefficients["(Intercept)"] == b0
-# model$coefficients["returns_vix] == b1
+# model$coefficients["returns_vix"] == b1
 
 # (iii)
 model_summary = summary(model)
