@@ -9,18 +9,17 @@ plot(
   pch = 1,
 )
 
-# len<-dim(corp)[1]
-# Do we need to annualize the returns?
+# TODO: Do we need to annualize the returns?
 # Calculate the daily return for each column.
-returns_spx <- round(diff(log(leverage$SPX)), 4)
-returns_vix <- round(diff(log(leverage$VIX)), 4)
+returns_spx <- diff(log(leverage$SPX))
+returns_vix <- diff(log(leverage$VIX))
 
 # (i) and (ii)
 plot(
   returns_vix,
   returns_spx,
   xlab = "VIX % Return",
-  ylab ="SPX % Returns",
+  ylab = "SPX % Returns",
   main = "SPX vs. VIX Daily Log Returns",
 )
 model = lm(returns_spx ~ returns_vix)
