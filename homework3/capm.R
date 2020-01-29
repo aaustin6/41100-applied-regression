@@ -16,14 +16,12 @@ model_standard_error = 0.03734
 
 
 # (i) What were the degrees of freedom used in calculating sε? What are the SSE and SSR?
-
 model_df = model_n - 2
 model_sst =  0.355
 model_ssr = model_rsquared * model_sst  # r-squared = SSR / SST
 model_sse = model_sst - model_ssr
 
 # (ii) Compute the sample variance for Y (s^2 of Y) and sample correlation between X and Y (rXY).
-
 model_sample_variance = model_sse / model_df # slide 5
 model_sample_correlation = sqrt(model_rsquared) # lecture 2, slide 34 r-squared is squared correlation
 model_sample_covariance = model_sample_correlation / (model_sb0 * model_sb1)
@@ -34,7 +32,7 @@ model_sample_covariance = model_sample_correlation / (model_sb0 * model_sb1)
 # E(ri) - rf = Bi(E(rm) - rf) # lecture 2, slide 54
 market_excess_return = 0.027
 risk_free_return = 0.0003 / 52
-predicted_return = model_b0 + model_b1 * (market_excess_return - risk_free_return) # do we need b0?
+predicted_return = risk_free_return + model_b1 * (market_excess_return - risk_free_return)
 
 # (iv) Suppose further that X ̄ = 0.0001 and sX = 0.02711201. Construct the 90% forecast interval for the estimate in (iii).
 
