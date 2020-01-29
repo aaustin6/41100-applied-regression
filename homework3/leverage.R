@@ -1,4 +1,4 @@
-getwd()
+setwd("~/Tresors/graduate-school/41100-applied-regression/projects/homework3/")
 leverage = read.csv(file = "leverage.csv")
 
 plot(
@@ -70,56 +70,60 @@ paste("Model r-squared and correlation match:", model_correlation_matches)
 # (i) Predict the variance and use it to give a 90% prediction interval
 # for a 10% increase in VIX, taking uncertainty of your estimates B0 and B1
 # into account.
-predict_confidence = 0.95
-predict_vix_return = 0.10
+predict_vix_return =  data.frame(size=.10)
 predict_df = length(model_summary$residuals) - 2
-predict_variance = sqrt(
+predict_stdev = sqrt(
   sum(model_summary$resid ^ 2) / predict_df
 )
-model_summary$sigma == predict_variance
+predict_variance = predict_stdev ** 2
+model_summary$sigma == predict_stdev
 
 predict_b0 = model_summary$coefficients[,"Estimate"]["(Intercept)"]
 predict_b1 = model_summary$coefficients[,"Estimate"]["returns_vix"]
 predict_sb0 = model_summary$coefficients[,"Std. Error"]["(Intercept)"]
 predict_sb1 = model_summary$coefficients[,"Std. Error"]["returns_vix"]
-t_dist = qt(.950, df = predict_df)
 
-predict_ci = c(predict_b0 - predict_sb0 * t_dist, predict_b0 + predict_sb0 * t_dist) # 90% CI for intercept
-
-confint(model, level=0.9)
-
-Xf <- data.frame(size=.10)
-prediction = predict(model, newdata=Xf, se.fit=TRUE, interval="prediction", level=.9)
-
-predict_zb0 = predict_b0 / predict_sb0 # number of standard errors away from the null
-# c(b0 - sb0*t025, b0 + sb0*t025)
+prediction = predict(
+  model,
+  newdata = predict_vix_return,
+  se.fit = TRUE,
+  interval  ="prediction",
+  level =.9
+)
+# (ii) Plot a summary of the predictive distribution (mean and 90% ) for Vix returns
+# ranging from -20% to 20%
+# TODO: Does this need to be conditional selecting returns from 90%?
 
 plot(
-  prediction$fit[, "lwr"],
-  prediction$fit[, "upr"],
-  pch = 1,
+  returns_vix,
+  returns_spx,
+  xlab = "VIX % Return",
+  ylab = "SPX % Returns",
+  main = "SPX vs. VIX Daily Log Returns",
 )
+abline(model)
+lines(returns_vix, prediction$fit[, "lwr"], col="red", lty=2)
+lines(returns_vix, prediction$fit[, "upr"], col="blue", lty=2)
 
-# predict_y =
-#  model$coefficients["(Intercept)"] +
-#  (model$coefficients["returns_vix"] * predict_vix_return)
-# confit(model, level = 0.95)
+# Following lecture 3 slide 55
+predict_sigma = model_summary$sigma
+t_dist = qt(.950, df = predict_df)
+n = length(returns_vix)
+sfit =  predict_sigma * sqrt(
+  1 / n +
+  (predict_vix_return - mean(returns_vix) )^2 /
+  ( ( n - 1) * var(returns_vix) )
+) # se(Yhat)
 
+predictive_interval =
+  predict_b0 +
+  predict_b1 *
+  predict_vix_return +
+  c(0,-1, 1) *
+  t_dist *
+  sqrt(predict_sigma ^ 2 + sfit ^ 2)
 
-# TODO: (ii) Plot a summary of the predictive distribution (mean and 90% ) for Vix returns
-# ranging from -20% to 20%
 
 # TODO: (iii) What range of VIX returns would be plausible for the expected S&P 500
 # Return to the rise of 2% based on your prediction interval?
 
-
-# Y ~ N(predict_y, predict_vix_return)
-# PI = Y +/- stdev
-# predict_interval = qnorm(
-#   predict_confidence,
-#   mean = predict_y,
-#   sd = predict_stdev,
-# )
-# predict_lower = predict_y - predict_interval
-# predict_upper = predict_y + predict_interval
-# predict_final = cbind(predict_lower, predict_y, predict_upper)
