@@ -1,5 +1,4 @@
 cheese = read.csv(file = "cheese.csv")
-
 # Plot our data
 boxplot(
  log(cheese$vol) ~ cheese$disp,
@@ -70,8 +69,8 @@ legend(
   6.5,
   legend=c("With Ads", "Without Ads"),
   col=c("Red", "Black"),
-  lty=1,
-  cex=0.8,
+  lty = 1,
+  cex = 0.8,
 )
 sl
 ### Check our model ###
