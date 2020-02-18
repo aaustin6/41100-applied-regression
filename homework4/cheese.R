@@ -76,7 +76,7 @@ legend(
 
 # Another LM of the difference betwen the two
 
-# Subtract the difference between the estimate
+# Attempt to subtract the differences between both models and
 x_values = seq(min(cheese$log.price), max(cheese$log.price), length.out = 200)
 predicted_values = data.frame(x_values)
 fitted_values = function(model, x_vector) {
@@ -91,6 +91,9 @@ predicted_values = cbind(predicted_values, difference = y_display - y_no_display
 
 difference_model = lm(predicted_values$difference ~ predicted_values$x_values)
 plot(
+  cbind(y_display, y_no_display) ~ x_values
+)
+plot(
   predicted_values$difference ~ predicted_values$x_values,
   ylab = "Log of Predicted Regression Differences",
   xlab = "Log of Price",
@@ -98,20 +101,4 @@ plot(
   pch = 1,
   cex = 0.5,
 )
-
-### Check our model ###
-
-qqnorm(rstudent(price_model))
-abline(a=0, b=1, col=c("red"))
-
-plot(
-  price_model$residuals ~ cheese$log.price,
-  ylab = "Residuals",
-  xlab = "Log of Price",
-  main = "Price Elasticity — Residuals vs. Log of Price",
-  pch = 1,
-)
-price_model_residuals = lm(formula = price_model$residuals ~ cheese$log.price,)
-abline(price_model_residuals, col=c("red"))
-
 
