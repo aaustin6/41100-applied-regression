@@ -145,6 +145,7 @@ legend(
 )
 
 # Prediction Interval Plot
+par(mfrow=c(1,1))
 basic_plot = plot(
   nutrition$woh ~ nutrition$age,
   xlab = "Age (Months)",
@@ -157,6 +158,32 @@ basic_prediction = predict(
   interval = "prediction",
   level =.95,
 )
+polynomial_prediction = predict(
+  polynomial_model,
+  interval = "prediction",
+  level =.95,
+)
+dummy_prediction = predict(
+  dummy_model,
+  interval = "prediction",
+  level =.95,
+)
+prediction_data = data.frame(
+  basic_low = basic_prediction[,"lwr"],
+  basic_high = basic_prediction[,"upr"],
+  polynomial_low = polynomial_prediction[,"lwr"],
+  polynomial_high = polynomial_prediction[,"upr"],
+  dummy_low = dummy_prediction[,"lwr"],
+  dummy_high = dummy_prediction[,"upr"]
+)
+lines(nutrition$age, prediction_data$basic_low, col = c("red"))
+lines(nutrition$age, prediction_data$basic_high, col = c("red"))
+lines(nutrition$age, prediction_data$polynomial_low, col = c("blue"))
+lines(nutrition$age, prediction_data$polynomial_high, col = c("blue"))
+lines(nutrition$age, prediction_data$dummy_low, col = c("purple"))
+lines(nutrition$age, prediction_data$dummy_high, col = c("purple"))
+
+
 # TODO: need to get the X-values and then plot the low/high values
 # lines(basic_prediction)
 
