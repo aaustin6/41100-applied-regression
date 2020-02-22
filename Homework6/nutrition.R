@@ -56,17 +56,20 @@ polynomial_relationship = nutrition$woh ~ nutrition$age + nutrition$age_squared
 plot(
   nutrition$woh ~ nutrition$age_squared,
   xlab = "Age (Months Squared)",
-  ylab = "Weight to Height Squared",
+  ylab = "Weight to Height Ratio",
   main = "Polynomial Relationship b/w W-to-H Ratio and Age",
   pch = 18
 )
 polynomial_model = lm(formula = nutrition$woh ~ nutrition$age + nutrition$age_squared)
-lines(age_squared,fitted(polynomial_model), col = c("red"))
+lines(nutrition$age_squared, fitted(polynomial_model), col = c("red"))
 summary(polynomial_model)
 anova(polynomial_model)
 
-hist(rstudent(polynomial_model), col = c("black"))
-qqnorm(rstudent(polynomial_model), col = c("black"))
+polynomial_residual_relationship = polynomial_model$residuals ~ nutrition$age
+polynomial_residual_model = lm(formula = polynomial_residual_relationship)
+
+hist(rstudent(polynomial_model), col = c("blue"))
+qqnorm(rstudent(polynomial_model), col = c("black"), main = "Q-Q of Polynomial Model")
 abline(a = 0, b = 1, col = c("red"))
 
 # Dummy Model
@@ -89,16 +92,16 @@ lines(nutrition$age, fitted(dummy_model), col = c("red"))
 summary(dummy_model)
 anova(dummy_model)
 
-# Check our Model
-dummy_residuals_relationship = dummy_model$residuals ~ nutrition$age
+# Residual Plot
+dummy_residual_relationship = dummy_model$residuals ~ nutrition$age
 plot(
-  dummy_residuals_relationship,
+  dummy_residual_relationship,
   xlab = "Age",
   ylab = "Residuals",
   main = "Residuals of W-to-H Ratio and Age using Dummy Vars",
   pch = 18
 )
-abline(lm(dummy_residuals_relationship), col = c("red"))
+abline(lm(dummy_residual_relationship), col = c("red"))
 
 hist(rstudent(polynomial_model), col = c("black"))
 qqnorm(rstudent(polynomial_model), col = c("black"))
