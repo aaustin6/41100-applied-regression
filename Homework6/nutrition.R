@@ -104,13 +104,96 @@ plot(
 abline(lm(dummy_residual_relationship), col = c("red"))
 
 hist(rstudent(polynomial_model), col = c("black"))
-qqnorm(rstudent(polynomial_model), col = c("black"))
-abline(a = 0, b = 1, col = c("red"))
 
-# AIC
-anova(basic_model, dummy_model)
-model_aic = c(
+### Model Comparison and Evaluation ###
+
+# AIC for Basic/Polynomial
+anova(basic_model, polynomial_model)
+basic_polynomial_aic = c(
   basic_model = extractAIC(basic_model)[2],
+  polynomial_model = extractAIC(polynomial_model)[2]
+)
+print(basic_polynomial_aic)
+
+# AIC for Basic/Dummy/Polynomial
+anova(basic_model, polynomial_model, dummy_model)
+basic_dummy_aic = c(
+  basic_model = extractAIC(basic_model)[2],
+  polynomial_model = extractAIC(polynomial_model)[2],
   dummy_model = extractAIC(dummy_model)[2]
 )
-print(model_aic)
+print(basic_dummy_aic)
+
+
+basic_plot = plot(
+  nutrition$woh ~ nutrition$age,
+  xlab = "Age (Months)",
+  ylab = "Weight to Height Ratio",
+  main = "Model fit for W-to-H Ratio and Age",
+  pch = 18
+)
+abline(basic_model, col=c("red"))
+lines(nutrition$age, fitted(polynomial_model), col = c("blue"))
+lines(nutrition$age, fitted(dummy_model), col = c("purple"))
+legend(
+  50,
+  0.6,
+  legend=c("Simple", "Polynomial", "Dummy"),
+  col=c("Red", "Blue", "Purple"),
+  lty = 1,
+  cex = 0.8,
+)
+
+# Prediction Interval Plot
+basic_plot = plot(
+  nutrition$woh ~ nutrition$age,
+  xlab = "Age (Months)",
+  ylab = "Weight to Height Ratio",
+  main = "95% Prediction Intervals for W-to-H Ratio and Age",
+  pch = 18
+)
+basic_prediction = predict(
+  basic_model,
+  interval = "prediction",
+  level =.95,
+)
+# TODO: need to get the X-values and then plot the low/high values
+# lines(basic_prediction)
+
+# Evaluate all three Residual Plots
+par(mfrow=c(1,3))
+plot(
+  residual_relationship,
+  xlab = "Age",
+  ylab = "Residuals",
+  main = "Simple Model Residuals",
+  pch = 18
+)
+abline(residual_model, col = c("red"))
+
+plot(
+  polynomial_residual_relationship,
+  xlab = "Age",
+  ylab = "Residuals",
+  main = "Polynomial Model Residuals",
+  pch = 18
+)
+abline(polynomial_residual_model, col = c("red"))
+
+plot(
+  dummy_residual_relationship,
+  xlab = "Age",
+  ylab = "Residuals",
+  main = "Dummy Model Residuals",
+  pch = 18
+)
+abline(lm(dummy_residual_relationship), col = c("red"))
+
+# Evaluate all three Q-Q Polots
+par(mfrow=c(1,3))
+qqnorm(rstudent(basic_model), col = c("black"), main = "Q-Q of Simple Model")
+abline(a = 0, b = 1, col = c("red"))
+qqnorm(rstudent(polynomial_model), col = c("black"), main = "Q-Q of Polynomial Model")
+abline(a = 0, b = 1, col = c("red"))
+qqnorm(rstudent(dummy_model), col = c("black"), main = "Q-Q of Dummy Model")
+abline(a = 0, b = 1, col = c("red"))
