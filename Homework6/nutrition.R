@@ -21,7 +21,7 @@ plot(
   residual_relationship,
   xlab = "Age",
   ylab = "Residuals",
-  main = "Residual Plot",
+  main = "Weight-to-Height and Age Residuals",
   pch = 18
 )
 abline(residual_model, col=c("red"))
@@ -32,12 +32,12 @@ qqnorm(rstudent(basic_model), col = c("black"), pch = 18)
 abline(a = 0, b = 1, col = c("red"))
 
 ### Transformed Model ###
-transformed_relationship = sqrt(nutrition$woh) ~ sqrt(nutrition$age)
+transformed_relationship = log(nutrition$woh) ~ log(nutrition$age)
 plot(
   transformed_relationship,
-  xlab = "Sqrt of Age (Months)",
-  ylab = "Sqrt of Weight to Height",
-  main = "Relationship b/w Transformed W-to-H Ratio and Age",
+  xlab = "Log of Age (Months)",
+  ylab = "Log of Weight to Height",
+  main = "Log Relationship b/w LW-to-H Ratio and Age",
   pch = 18
 )
 transformed_model = lm(formula = transformed_relationship)
