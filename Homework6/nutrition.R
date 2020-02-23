@@ -81,11 +81,12 @@ dummy_relationship = nutrition$woh ~
   nutrition$under_7 +
   nutrition$mixed
 
+par(mfrow=c(1,2)) # Plot + Residuals
 plot(
   nutrition$woh ~ nutrition$age,
   xlab = "Age",
   ylab = "Weight to Height",
-  main = "Relationship b/w W-to-H Ratio and Age using Dummy Vars",
+  main = "Dummy Model W-to-H vs. Age",
   pch = 18
 )
 dummy_model = lm(dummy_relationship, data = nutrition)
@@ -99,7 +100,7 @@ plot(
   dummy_residual_relationship,
   xlab = "Age",
   ylab = "Residuals",
-  main = "Residuals of W-to-H Ratio and Age using Dummy Vars",
+  main = "Dummy W-to-H Residuals",
   pch = 18
 )
 abline(lm(dummy_residual_relationship), col = c("red"))
@@ -183,10 +184,6 @@ lines(nutrition$age, prediction_data$polynomial_low, col = c("blue"))
 lines(nutrition$age, prediction_data$polynomial_high, col = c("blue"))
 lines(nutrition$age, prediction_data$dummy_low, col = c("purple"))
 lines(nutrition$age, prediction_data$dummy_high, col = c("purple"))
-
-
-# TODO: need to get the X-values and then plot the low/high values
-# lines(basic_prediction)
 
 # Evaluate all three Residual Plots
 par(mfrow=c(1,3))
