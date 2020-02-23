@@ -55,14 +55,14 @@ abline(a = 0, b = 1, col = c("red"))
 nutrition$age_squared = nutrition$age ^ 2
 polynomial_relationship = nutrition$woh ~ nutrition$age + nutrition$age_squared
 plot(
-  nutrition$woh ~ nutrition$age_squared,
-  xlab = "Age (Months Squared)",
+  nutrition$woh ~ nutrition$age,
+  xlab = "Age (Months)",
   ylab = "Weight to Height Ratio",
   main = "Polynomial Relationship b/w W-to-H Ratio and Age",
   pch = 18
 )
 polynomial_model = lm(formula = nutrition$woh ~ nutrition$age + nutrition$age_squared)
-lines(nutrition$age_squared, fitted(polynomial_model), col = c("red"))
+lines(nutrition$age, fitted(polynomial_model), col = c("red"))
 summary(polynomial_model)
 anova(polynomial_model)
 
