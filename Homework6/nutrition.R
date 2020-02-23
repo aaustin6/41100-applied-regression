@@ -1,12 +1,13 @@
 nutrition = read.csv(file = "nutrition.csv")
 
 ### Basic Model ###
+par(mfrow=c(1,2)) # Plot + Residuals
 basic_relationship = nutrition$woh ~ nutrition$age
 plot(
   basic_relationship,
   xlab = "Age (Months)",
   ylab = "Weight to Height",
-  main = "Relationship between W-to-H Ratio and Age",
+  main = "Simple W-to-H Ratio and Age",
   pch = 18
 )
 basic_model = lm(formula = basic_relationship)
@@ -19,9 +20,9 @@ residual_relationship = basic_model$residuals ~ nutrition$age
 residual_model = lm(formula = residual_relationship)
 plot(
   residual_relationship,
-  xlab = "Age",
+  xlab = "Age (Months)",
   ylab = "Residuals",
-  main = "Weight-to-Height and Age Residuals",
+  main = "Simple W-to-H Residuals",
   pch = 18
 )
 abline(residual_model, col=c("red"))
