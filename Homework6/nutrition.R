@@ -38,7 +38,7 @@ plot(
   transformed_relationship,
   xlab = "Log of Age (Months)",
   ylab = "Log of Weight to Height",
-  main = "Log Relationship b/w LW-to-H Ratio and Age",
+  main = "Log Model of W-to-H Ratio & åAge",
   pch = 18
 )
 transformed_model = lm(formula = transformed_relationship)
@@ -46,28 +46,48 @@ abline(transformed_model, col=c("red"))
 anova(transformed_model)
 summary(transformed_model)
 
-# Check the model
+transformed_residual_relationship = transformed_model$residuals ~ nutrition$age
+transformed_residual_model = lm(formula = transformed_residual_relationship)
+plot(
+  transformed_residual_relationship,
+  xlab = "Age (Months)",
+  ylab = "Residuals",
+  main = "Log W-to-H Residuals",
+  pch = 18
+)
+abline(transformed_residual_model, col=c("red"))
+
 hist(rstudent(transformed_model), col = c("black"))
 qqnorm(rstudent(transformed_model), col = c("black"))
 abline(a = 0, b = 1, col = c("red"))
 
 ### Polynomial Model ###
+par(mfrow=c(1,2)) # Plot + Residuals
 nutrition$age_squared = nutrition$age ^ 2
-polynomial_relationship = nutrition$woh ~ nutrition$age + nutrition$age_squared
+nutrition$age_cubed = nutrition$age ^ 3
+polynomial_relationship = nutrition$woh ~ nutrition$age + nutrition$age_squared + nutrition$age_cubed
 plot(
   nutrition$woh ~ nutrition$age,
   xlab = "Age (Months)",
   ylab = "Weight to Height Ratio",
-  main = "Polynomial Relationship b/w W-to-H Ratio and Age",
+  main = "2 Polynomial Model",
   pch = 18
 )
-polynomial_model = lm(formula = nutrition$woh ~ nutrition$age + nutrition$age_squared)
+polynomial_model = lm(formula = nutrition$woh ~ nutrition$age + nutrition$age_squared + nutrition$age_cubed)
 lines(nutrition$age, fitted(polynomial_model), col = c("red"))
 summary(polynomial_model)
 anova(polynomial_model)
 
 polynomial_residual_relationship = polynomial_model$residuals ~ nutrition$age
 polynomial_residual_model = lm(formula = polynomial_residual_relationship)
+plot(
+  polynomial_residual_relationship,
+  xlab = "Age (Months)",
+  ylab = "Residuals",
+  main = "2 Polynomial Model Residuals",
+  pch = 18
+)
+abline(polynomial_residual_model, col=c("red"))
 
 hist(rstudent(polynomial_model), col = c("blue"))
 qqnorm(rstudent(polynomial_model), col = c("black"), main = "Q-Q of Polynomial Model")
