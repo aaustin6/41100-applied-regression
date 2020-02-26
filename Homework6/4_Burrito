@@ -1,0 +1,35 @@
+setwd("~/Documents/Booth- MBA/Classes/Year 1_02Winter/Regressions/HW6/Data")
+
+burrito<-read.csv("burrito.csv")
+#build data frame (maybe this is what i'm supposed to do first?)
+#YX$overall<-burrito$overall
+
+#1- for forward regression from null to full
+null <- lm(overall ~ 1, data=burrito)
+full <- lm(overall ~ . + .^2, data=burrito)
+fwd <- step(null, scope=formula(full),direction="forward", k=log(348))
+
+#summary of the final model (best found model)
+summary(lm(overall ~ Synergy + Meat + Fillings + Meat.filling + Sauce + 
+     Uniformity + Beans + Temp + Cost + Meat:Fillings + Meat:Beans + 
+     Fillings:Sauce, data=burrito))
+
+#2- backwards step function (full to null) without interactions in full
+nullb <- lm(overall ~ 1, data=burrito)
+fullb <- lm(overall ~ ., data=burrito)
+bkwd <- step(fullb, scope=formula(nullb),direction="backward", k=log(348))
+
+#summary of the final model (best found model)
+summary(lm(overall ~ Cost + Temp + Meat + Fillings + Meat.filling + Uniformity + 
+             Synergy + Chicken + Shrimp + Beans, data=burrito))
+
+
+#3- do same as in 1, but with new CSV 
+clairemont<-read.csv("clairemont.csv")
+nullc <- lm(overall ~ 1, data=clairemont)
+#remove interactions or won't work for step function (too big)
+fullc <- lm(overall ~ ., data=clairemont)
+fwd <- step(nullc, scope=formula(fullc),direction="forward", k=log(36))
+#for me it ends up with BIC=-INF the following error:
+#warning: attempting model selection on an essentially perfect fit is nonsense
+
